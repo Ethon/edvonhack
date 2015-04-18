@@ -21,8 +21,8 @@
 #pragma once
 
 namespace ed {
-	namespace driverif {
-		void init();
-		void onFrame();
-	}
+   namespace driverif {
+      void init();
+      void onFrame();
+   }
 }

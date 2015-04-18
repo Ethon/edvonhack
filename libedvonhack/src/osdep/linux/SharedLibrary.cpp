@@ -61,7 +61,7 @@ public:
       }
       return result;
    }
-   
+
    // Disallow copies.
    SharedLibraryImpl(SharedLibraryImpl const&) = delete;
    SharedLibraryImpl& operator=(SharedLibraryImpl const&) = delete;

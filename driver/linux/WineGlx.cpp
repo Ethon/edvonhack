@@ -64,57 +64,57 @@ static glXSwapBuffers_T glXSwapBuffers_Real = nullptr;
 
 static void glXSwapBuffers_Hook(Display* display, GLXDrawable drawable) {
 
-	// Retrieve the original glXSwapBuffers if we don't have it yet.
-	if(glXSwapBuffers_Real == nullptr) {
-		glXSwapBuffers_Real =
-			ed::toFunctionPointer<void, Display*, GLXDrawable>(
-				glXGetProcAddressARB_Real("glXSwapBuffers"));
-	}
-	
-	// Call the initialization function if not done yet.
-	static bool isInit = false;
-	if(!isInit) {
-		ed::driverif::init();
+   // Retrieve the original glXSwapBuffers if we don't have it yet.
+   if(glXSwapBuffers_Real == nullptr) {
+      glXSwapBuffers_Real =
+         ed::toFunctionPointer<void, Display*, GLXDrawable>(
+            glXGetProcAddressARB_Real("glXSwapBuffers"));
+   }
+
+   // Call the initialization function if not done yet.
+   static bool isInit = false;
+   if(!isInit) {
+      ed::driverif::init();
       isInit = true;
-	}
-	
-	// Notify driver main of the frame and call the real glXSwapBuffers.
-	ed::driverif::onFrame();
-	glXSwapBuffers_Real(display, drawable);
+   }
+
+   // Notify driver main of the frame and call the real glXSwapBuffers.
+   ed::driverif::onFrame();
+   glXSwapBuffers_Real(display, drawable);
 }
 
 static void* glXGetProcAddressARB_Hook(char const* symbol) {
 
-	// Retrieve the original glXGetProcAddressARB if we don't have it yet.
-	if(glXGetProcAddressARB_Real == nullptr) {
-		glXGetProcAddressARB_Real =
-			ed::toFunctionPointer<void*, char const*>(
-				dlsym_Real(RTLD_DEFAULT, "glXGetProcAddressARB"));
-	}
-	
-	// Return our hooked glXSwapBuffers upon request.
-	if(std::strcmp(symbol, "glXSwapBuffers") == 0) {
-		return ed::toObjectPointer(&glXSwapBuffers_Hook);
-	}
+   // Retrieve the original glXGetProcAddressARB if we don't have it yet.
+   if(glXGetProcAddressARB_Real == nullptr) {
+      glXGetProcAddressARB_Real =
+         ed::toFunctionPointer<void*, char const*>(
+            dlsym_Real(RTLD_DEFAULT, "glXGetProcAddressARB"));
+   }
 
-	// All other requests shall be handled by the real glXGetProcAddressARB.
-    return glXGetProcAddressARB_Real(symbol);
+   // Return our hooked glXSwapBuffers upon request.
+   if(std::strcmp(symbol, "glXSwapBuffers") == 0) {
+      return ed::toObjectPointer(&glXSwapBuffers_Hook);
+   }
+
+   // All other requests shall be handled by the real glXGetProcAddressARB.
+   return glXGetProcAddressARB_Real(symbol);
 }
 
 void* dlsym(void* handle, char const* symbol) {
 
-	// Retrieve the original dlsym via dlvsym if we don't have it yet.
-	// We can't use dlsym because this would result in recursive calls.
-    if(dlsym_Real == nullptr) {
-        dlsym_Real = ed::toFunctionPointer<void*, void*, char const*>(
-			dlvsym(RTLD_DEFAULT, "dlsym", VERSION_STRING.c_str()));
-	}
- 
-	// Return our hooked glXGetProcAddressARB upon request.
-    if(std::strcmp(symbol, "glXGetProcAddressARB") == 0) {
-        return ed::toObjectPointer(&glXGetProcAddressARB_Hook);
-	}
+   // Retrieve the original dlsym via dlvsym if we don't have it yet.
+   // We can't use dlsym because this would result in recursive calls.
+   if(dlsym_Real == nullptr) {
+      dlsym_Real = ed::toFunctionPointer<void*, void*, char const*>(
+      dlvsym(RTLD_DEFAULT, "dlsym", VERSION_STRING.c_str()));
+   }
 
-	// All other requests shall be handled by the real dlsym.
-    return dlsym_Real(handle, symbol);
+   // Return our hooked glXGetProcAddressARB upon request.
+   if(std::strcmp(symbol, "glXGetProcAddressARB") == 0) {
+      return ed::toObjectPointer(&glXGetProcAddressARB_Hook);
+   }
+
+   // All other requests shall be handled by the real dlsym.
+   return dlsym_Real(handle, symbol);
 }
