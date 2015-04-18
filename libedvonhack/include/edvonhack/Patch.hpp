@@ -21,25 +21,25 @@
 #pragma once
 
 // C++ Standard Library:
-#include <cstdint>
+#include <vector>
+
+// Ed:
+#include <edvonhack/Types.hpp>
 
 namespace ed {
-   namespace prot {
-      enum MemoryProtection {
-         Read = 1 << 0,
-         Write = 1 << 1,
-         Execute = 1 << 2
-      };
-   }
+   class Patch {
+   private:
+      void* address;
+      std::vector<Byte> patchData, oldData;
 
-   std::size_t getSystemPageSize();
+   public:
+      Patch(void* address, std::vector<Byte> patchData);
+      ~Patch();
+      void applyPatch(bool resetProtection = false);
+      void removePatch(bool resetProtection = false);
 
-   inline void* alignPointerToPageSize(void* pointer, std::size_t& off) {
-      std::uintptr_t asInt = reinterpret_cast<std::uintptr_t>(pointer);
-      off = asInt % getSystemPageSize();
-      asInt -= off;
-      return reinterpret_cast<void*>(asInt);
-   }
-
-   void setMemoryProtection(void* start, std::size_t length, int flags);
+      // We don't want copies referencing the same patch.
+      Patch(Patch const&) = delete;
+      Patch& operator=(Patch const&) = delete;
+   };
 }

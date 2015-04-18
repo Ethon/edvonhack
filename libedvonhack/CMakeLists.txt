@@ -2,6 +2,7 @@
 set(LIBED_HDR
    include/edvonhack/Application.hpp
    include/edvonhack/MemoryProtection.hpp
+   include/edvonhack/Patch.hpp
    ${LIDED_UTIL_HDR}
 )
 set(LIDED_UTIL_HDR
@@ -13,6 +14,7 @@ set(LIDED_UTIL_HDR
 set(LIBED_SRC
    src/osdep/${TARGET_OS}/SharedLibrary.cpp
    src/osdep/${TARGET_OS}/MemoryProtection.cpp
+   src/Patch.cpp
 )
 
 # Compile libedvonhack as shared library.
