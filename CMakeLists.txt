@@ -15,9 +15,9 @@ endif()
 
 # Retrieve the current operating system.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(TARGET_OS "Linux")
+    set(TARGET_OS "linux")
 elseif(WIN32)
-   set(TARGET_OS "Win32")
+   set(TARGET_OS "win32")
 endif()
 
 # Set compiler flags.
@@ -38,9 +38,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
          "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -m64")
    endif()
 
-   if(${TARGET_OS} STREQUAL "Linux")
+   if(${TARGET_OS} STREQUAL "linux")
       add_definitions("-DEDVONHACK_OS_LINUX")
-   elseif(${TARGET_OS} STREQUAL "Win32")
+   elseif(${TARGET_OS} STREQUAL "win32")
       add_definitions("-DEDVONHACK_OS_WIN32")
    endif()
 endif()

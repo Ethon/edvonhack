@@ -10,7 +10,7 @@ set(LIDED_UTIL_HDR
 
 # Set source files.
 set(LIBED_SRC
-   src/util/SharedLibrary.cpp
+   src/osdep/${TARGET_OS}/SharedLibrary.cpp
 )
 
 # Compile libedvonhack as shared library.

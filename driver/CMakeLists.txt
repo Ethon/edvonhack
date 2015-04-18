@@ -1,5 +1,5 @@
 # Get the desired driver from the user.
-if(TARGET_OS STREQUAL "Linux")
+if(TARGET_OS STREQUAL "linux")
    set(DRIVER "WineGlx" CACHE STRING "Select a driver")
    set_property(CACHE DRIVER PROPERTY STRINGS
       "WineGlx")
