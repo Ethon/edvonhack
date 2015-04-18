@@ -1,6 +1,7 @@
 # Set header files.
 set(LIBED_HDR
    include/edvonhack/Application.hpp
+   include/edvonhack/MemoryProtection.hpp
    ${LIDED_UTIL_HDR}
 )
 set(LIDED_UTIL_HDR
@@ -11,6 +12,7 @@ set(LIDED_UTIL_HDR
 # Set source files.
 set(LIBED_SRC
    src/osdep/${TARGET_OS}/SharedLibrary.cpp
+   src/osdep/${TARGET_OS}/MemoryProtection.cpp
 )
 
 # Compile libedvonhack as shared library.
