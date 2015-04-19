@@ -45,8 +45,8 @@ public:
    virtual ~SharedLibraryImpl() override {
       if(handle != nullptr) {
          if(dlclose(handle) != 0) {
-            throw std::runtime_error(
-               std::string("dlclose failed: ") + dlerror());
+            // throw std::runtime_error(
+               // std::string("dlclose failed: ") + dlerror());
          }
       }
    }

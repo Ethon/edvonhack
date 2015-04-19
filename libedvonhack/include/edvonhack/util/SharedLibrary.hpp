@@ -26,7 +26,7 @@
 namespace ed {
    class SharedLibrary {
    public:
-      virtual ~SharedLibrary() = 0;
+      virtual ~SharedLibrary() = default;
       virtual void* getSymbol(char const* name) = 0;
    };
    typedef std::shared_ptr<SharedLibrary> SharedLibraryPtr;
