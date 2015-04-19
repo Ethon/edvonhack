@@ -22,16 +22,25 @@ endif()
 
 # Set compiler flags.
 if(CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+   
    add_definitions("-std=c++11 -Wall -Wextra -Weffc++")
 
    if(${TARGET_CPU} STREQUAL "x86")
       add_definitions("-DEDVONHACK_CPU_X86")
+      set(EXE_COMPILE_FLAGS "-m32")
+      set(LIB_COMPILE_FLAGS "-m32")
+      set(EXE_LINK_FLAGS "-m32")
+      set(LIB_LINK_FLAGS "-m32")
       set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -m32")
       set(CMAKE_SHARED_LIBRARY_C_FLAGS "${CMAKE_SHARED_LIBRARY_C_FLAGS} -m32")
       set(CMAKE_SHARED_LIBRARY_CXX_FLAGS
          "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -m32")
    elseif(${TARGET_CPU} STREQUAL "x64")
       add_definitions("-DEDVONHACK_CPU_X64")
+      set(EXE_COMPILE_FLAGS "-m64")
+      set(LIB_COMPILE_FLAGS "-m64")
+      set(EXE_LINK_FLAGS "-m64")
+      set(LIB_LINK_FLAGS "-m64")
       set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -m64")
       set(CMAKE_SHARED_LIBRARY_C_FLAGS "${CMAKE_SHARED_LIBRARY_C_FLAGS} -m64")
       set(CMAKE_SHARED_LIBRARY_CXX_FLAGS
@@ -53,3 +62,8 @@ include_directories(
 # Compile the parts of Ed von Hack.
 add_subdirectory(libedvonhack)
 add_subdirectory(driver)
+
+option(RUN_UNITTETS "Compile and run unit tests" ON)
+if(RUN_UNITTETS)
+   add_subdirectory(unittest)
+endif()
