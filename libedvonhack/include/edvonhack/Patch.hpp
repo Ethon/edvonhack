@@ -34,6 +34,7 @@ namespace ed {
 
    public:
       Patch(void* address, std::vector<Byte> patchData);
+      Patch(Patch&& other);
       ~Patch();
       void applyPatch(bool resetProtection = false);
       void removePatch(bool resetProtection = false);

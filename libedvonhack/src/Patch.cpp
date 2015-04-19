@@ -28,11 +28,16 @@
 
 ed::Patch::Patch(void* address, std::vector<Byte> patchData)
    :  address(address), patchData(std::move(patchData)),
-      oldData(patchData.size()) {
+      oldData(this->patchData.size()) {
 
    assert(address != nullptr);
    std::memcpy(oldData.data(), address, oldData.size());
 }
+
+ed::Patch::Patch(Patch&& other)
+   :  address(other.address), patchData(std::move(other.patchData)),
+      oldData(std::move(other.oldData))
+{ }
 
 ed::Patch::~Patch() {
    removePatch();
